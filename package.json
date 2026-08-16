@@ -1,0 +1,45 @@
+{
+  "name": "dsh-message-jump",
+  "version": "0.1.0",
+  "description": "DSH (DeepSeek Harness) web 消息定位侧栏插件：会话页右侧指令列表面板，一键列出全部用户指令并平滑滚动定位到历史消息，类似 DeepSeek 网页对话的右侧消息列表。",
+  "type": "module",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TiChuXiXi/dsh-message-jump.git"
+  },
+  "homepage": "https://github.com/TiChuXiXi/dsh-message-jump#readme",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "message",
+    "jump",
+    "navigation",
+    "chat",
+    "deepseek"
+  ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime"
+      ]
+    }
+  },
+  "license": "MIT"
+}
