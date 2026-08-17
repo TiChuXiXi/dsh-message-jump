@@ -1,7 +1,7 @@
 {
   "name": "dsh-message-jump",
-  "version": "0.1.0",
-  "description": "DSH (DeepSeek Harness) web 消息定位侧栏插件：会话页右侧指令列表面板，一键列出全部用户指令并平滑滚动定位到历史消息，类似 DeepSeek 网页对话的右侧消息列表。",
+  "version": "0.2.0",
+  "description": "DSH (DeepSeek Harness) web 消息增强插件：① 会话页右侧指令列表面板，一键列出全部用户指令并平滑滚动定位到历史消息；② 输入框 ↑/↓ 键历史消息穿梭，像终端命令历史一样把已发送内容快速回填到输入框。",
   "type": "module",
   "main": "lib/index.js",
   "repository": {
@@ -17,7 +17,11 @@
     "jump",
     "navigation",
     "chat",
-    "deepseek"
+    "deepseek",
+    "history",
+    "keyboard",
+    "arrow-keys",
+    "input"
   ],
   "exports": {
     ".": "./lib/index.js",
