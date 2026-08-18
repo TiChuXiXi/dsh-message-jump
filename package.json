@@ -1,6 +1,6 @@
 {
   "name": "dsh-message-jump",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "DSH (DeepSeek Harness) web 消息增强插件：① 会话区左侧/右侧丝滑悬浮指令导航条（Codex 风格，可配置位置），滚动联动定位、悬停预览指令内容；② 输入框 ↑/↓ 键历史消息穿梭，像终端命令历史一样把已发送内容快速回填到输入框。",
   "type": "module",
   "main": "lib/index.js",

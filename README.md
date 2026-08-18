@@ -11,7 +11,7 @@ DSH（DeepSeek Harness）web 消息增强插件：
 
 取代 v0.1/v0.2 的"右上角按钮 + 右侧大面板"，改为沿**会话区左缘或右缘**常驻的细长导航条，类似 Codex 的对话时间线：
 
-- **滚动联动定位**：每条已发送的用户指令（含 `steering`）对应一个纵向刻度，位置按消息在全文中的相对位置分布（滚动条地图式）；**深色刻度 = 当前位于视口顶部的指令**，随滚动实时刷新（跳转后有 800ms 锁定，避免与点击抢焦点）；
+- **滚动联动定位**：每条已发送的用户指令（含 `steering`）对应一个刻度条，所有刻度**等距集中在同一个小型容器里**（集中式堆叠，不随消息在全文中的位置分散）；**深色刻度 = 当前位于视口顶部的指令**，随滚动实时刷新（跳转后有 800ms 锁定，避免与点击抢焦点）；
 - **丝滑悬停**：鼠标悬停时，以悬停刻度为中心向四周产生"宽度过渡"涟漪（`d=0→3` 逐级衰减，CSS transition 平滑过渡），旁边浮出该指令的内容预览 + 时间气泡；
 - **点击跳转**：点击刻度平滑滚动到对应消息（距顶部 16px 停靠）并闪烁高亮 1.6 秒；
 - **位置可配置**：设置 → 常规 →"指令导航条位置"，可选**左侧 / 右侧**，立即生效并持久化（localStorage）；默认右侧。
@@ -87,7 +87,7 @@ dsh plugin --profile web add github:TiChuXiXi/dsh-message-jump
 数据与定位不依赖任何私有接口：
 
 - 列表数据来自会话快照 `ConversationSnapshot.chat`（与 `useSession` 同源），通过 `sessions.binding(id).session` 订阅；
-- 滚动定位复用 DSH 聊天视图自身的稳定 DOM 锚点：每条消息渲染在带 `data-chat-anchor-key` 的节点上，滚动容器是 `[data-conversation-scroll]`，与产品内部的 `anchorElement` / `scrollerOf` 机制一致；导航条通过读取该容器 bounding rect 沿边缘悬浮，刻度纵向位置按消息在全文中的归一化位置分布；
+- 滚动定位复用 DSH 聊天视图自身的稳定 DOM 锚点：每条消息渲染在带 `data-chat-anchor-key` 的节点上，滚动容器是 `[data-conversation-scroll]`，与产品内部的 `anchorElement` / `scrollerOf` 机制一致；导航条通过读取该容器 bounding rect 沿左/右缘垂直居中悬浮，刻度条在容器内等距堆叠；
 - 导航条只做只读查询与平滑滚动，不修改产品 DOM 结构（高亮仅为临时 CSS 类，1.6 秒后自动移除）；
 - 历史穿梭复用 `conversation.input.dock` 槽位提供的 `InputZone` owner props（`session` 会话快照 + `input` 输入状态）与公开的 `inputActions.setDraft()` 接口回填草稿；键盘监听挂在 `document` 捕获阶段、先于产品自身 `onKeyDown` 介入，且只在输入框聚焦、无弹出菜单争夺方向键、非 IME 组合输入时生效。
 
@@ -95,8 +95,8 @@ dsh plugin --profile web add github:TiChuXiXi/dsh-message-jump
 
 编辑 `lib/client.js` 即可调整：
 
-- `RAIL_W` / `RAIL_PAD` / `TICK_H`：导航条宽度、贴边间距、刻度高度
-- 悬停"宽度涟漪"的衰减半径：`tickWidth` 中 `1 - d / 3`（`3` 即影响半径，改大涟漪更宽）
+- `RAIL_PAD` / `BAR_W` / `BAR_MAX_W` / `BAR_H` / `BAR_GAP`：贴边间距、刻度条默认/最大宽度、条高、条间距
+- 悬停"宽度涟漪"的衰减半径：`barWidth` 中 `1 - d / 3`（`3` 即影响半径，改大涟漪更宽）
 - 悬停预览截断长度：`previewOf` 中的 `96`
 - 是否把 `context` 注入消息也收进导航条/列表（`collectItems` 中放宽 `kind` 判断）
 - 历史穿梭收录范围：`collectHistory` 中放宽 `kind` 判断（目前只收 `user` / `steering`）
